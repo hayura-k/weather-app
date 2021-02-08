@@ -4,14 +4,12 @@ import axios from 'axios';
 const API_ENDPOINT = 'http://api.openweathermap.org/data/2.5/forecast'
 const API_KEY = 'ce1ba48d1dc2565c704875bff4b56117'
 
-
 class Weather extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             apiKey: API_KEY,
             requestCity: '',
-            city: '',
             response: []
         }
         this.handleInput = this.handleInput.bind(this);
@@ -28,7 +26,6 @@ class Weather extends React.Component {
             console.log(res.data);
             this.setState({
                 response: res.data.list,
-                city: res.data.city.name
             });
         }).catch(function(error){
             console.log(error);
@@ -37,31 +34,22 @@ class Weather extends React.Component {
 
     handleInput(event){
         this.setState({
-            requestCity: event.target.value
+            requestCity: event.target.value,
         });
     }
 
     render() {
 
-        console.log(this.state.requestCity);
         console.log(this.state.response)
-        console.log(this.state.city)
         return (
             <div>
                 <input type='text' value={this.state.requestCity} onChange={this.handleInput}/>
                 <button type='submit' onClick={this.handleGetWeather}>天気get</button>
-                {this.state.response.map((res)=>(
+                {this.state.response.map(res=>(
                     <ul>
-                        <li>{this.state.city}の天気は{res.weather[0].main}です</li>
+                        <li>{this.state.requestCity}の{res.dt_txt}の天気は{res.weather[0].main}です</li>
                     </ul>
                 ))}
-                {/* {Object.keys(this.state.response).map(key => (
-                    <li key={key}>
-                        {this.state.response[key].dt_txt}
-                        ,<img src={'http://openweathermap.org/img/w/'+this.state.response[key].weather[0].icon+'.png'} />
-                        {this.state.response[key].weather[0].main}
-                    </li>
-                ))} */}
             </div>
         )
     }
