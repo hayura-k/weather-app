@@ -9,7 +9,7 @@ class Weather extends React.Component {
         super(props);
         this.state = {
             apiKey: API_KEY,
-            requestCity: '',
+            requestCity: '東京都',
             response: []
         }
         this.handleInput = this.handleInput.bind(this);
@@ -38,9 +38,11 @@ class Weather extends React.Component {
         });
     }
 
-    render() {
+    componentDidMount(){
+        this.handleGetWeather();
+    }
 
-        console.log(this.state.response)
+    render() {
         return (
             <div>
                 <input type='text' value={this.state.requestCity} onChange={this.handleInput}/>
