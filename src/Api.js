@@ -9,23 +9,25 @@ class Weather extends React.Component {
         super(props);
         this.state = {
             apiKey: API_KEY,
-            requestCity: '東京都',
+            requestCity: '',
             response: []
         }
         this.handleInput = this.handleInput.bind(this);
         this.handleGetWeather = this.handleGetWeather.bind(this)
     }
 
-    handleGetWeather() {
+    handleGetWeather(arg) {
         axios.get(API_ENDPOINT, {
             params: {
-                q: this.state.requestCity,
+                //変数argがない場合は、this.state.requestCityをqのバリューに代入しているはずなので、通信できてると思った。
+                q: arg || this.state.requestCity,
                 APPID: this.state.apiKey
             }
         }).then(res => {
             console.log(res.data);
             this.setState({
                 response: res.data.list,
+                requestCity: res.data.city.name
             });
         }).catch(function(error){
             console.log(error);
@@ -39,9 +41,10 @@ class Weather extends React.Component {
     }
 
     componentDidMount(){
-        this.handleGetWeather();
+        this.handleGetWeather('東京都');
     }
 
+    //inputタグにはstateが表示されているから、requestCityには値が入っている
     render() {
         return (
             <div>
