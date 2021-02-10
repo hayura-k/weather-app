@@ -19,12 +19,10 @@ class Weather extends React.Component {
     handleGetWeather(arg) {
         axios.get(API_ENDPOINT, {
             params: {
-                //変数argがない場合は、this.state.requestCityをqのバリューに代入しているはずなので、通信できてると思った。
-                q: arg || this.state.requestCity,
+                q: arg,
                 APPID: this.state.apiKey
             }
         }).then(res => {
-            console.log(res.data);
             this.setState({
                 response: res.data.list,
                 requestCity: res.data.city.name
@@ -44,12 +42,11 @@ class Weather extends React.Component {
         this.handleGetWeather('東京都');
     }
 
-    //inputタグにはstateが表示されているから、requestCityには値が入っている
     render() {
         return (
             <div>
                 <input type='text' value={this.state.requestCity} onChange={this.handleInput}/>
-                <button type='submit' onClick={this.handleGetWeather}>天気get</button>
+                <button type='submit' onClick={() => this.handleGetWeather(this.state.requestCity)}>天気get</button>
                 {this.state.response.map(res=>(
                     <ul>
                         <li>{this.state.requestCity}の{res.dt_txt}の天気は{res.weather[0].main}です</li>
