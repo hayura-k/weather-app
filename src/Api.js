@@ -1,14 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-
-const API_ENDPOINT = 'http://api.openweathermap.org/data/2.5/forecast'
-const API_KEY = 'ce1ba48d1dc2565c704875bff4b56117'
+import constant from './Constant';
 
 class Weather extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            apiKey: API_KEY,
+            apiKey: constant.API_KEY,
             requestCity: '',
             response: []
         }
@@ -17,7 +15,7 @@ class Weather extends React.Component {
     }
 
     handleGetWeather(arg) {
-        axios.get(API_ENDPOINT, {
+        axios.get(constant.API_ENDPOINT, {
             params: {
                 q: arg,
                 APPID: this.state.apiKey
