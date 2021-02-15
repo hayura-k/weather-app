@@ -1,8 +1,7 @@
 import React from 'react';
-import axios from 'axios';
-import constant from './constant';
 import { connect } from 'react-redux';
 import { returnWeatherAction } from './redux/actions';
+import weatherApi from './api';
 
 class Form extends React.Component {
     constructor(props){
@@ -11,20 +10,16 @@ class Form extends React.Component {
         this.handleGetWeather = this.handleGetWeather.bind(this)
     }
 
-
-    handleGetWeather(arg) {
-        axios.get(constant.API_ENDPOINT, {
+    handleGetWeather(arg){
+        weatherApi({
             params: {
                 q: arg,
-                APPID: this.props.apiKey
             }
-        }).then(res => {
-            //アクション生成
-            this.props.returnWeatherAction(res.data.list, res.data.city.name);
-            console.log(this.props);
-
+        }).then(res=>{
+            this.props.returnWeatherAction(res.data.list, res.data.city.name)
+            console.log(this.props)
         }).catch(function(error){
-            console.log(error);
+            console.log(error)
         })
     }
 
