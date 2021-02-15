@@ -1,5 +1,5 @@
 import { RETURN_WEATHER } from './actions';
-import initialState from './store/initialState';
+import initialState from './stores/initialState';
 
 
 export const weatherReducer = (state = initialState.weather, action)=>{

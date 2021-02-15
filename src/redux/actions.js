@@ -5,7 +5,7 @@ export const returnWeatherAction = (response, city_name) => {
         type: 'RETURN_WEATHER',
         payload: {
             response: response,
-            requestCity: city_name
+            city_name: city_name
         }
     }
 }

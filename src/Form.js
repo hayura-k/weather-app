@@ -8,11 +8,6 @@ import { returnWeatherAction } from './redux/actions';
 class Form extends React.Component {
     constructor(props){
         super(props);
-        this.state = {
-            apiKey: constant.API_KEY,
-            requestCity: '',
-            // response: []
-        }
         this.handleInput = this.handleInput.bind(this);
         this.handleGetWeather = this.handleGetWeather.bind(this)
     }
@@ -22,16 +17,11 @@ class Form extends React.Component {
         axios.get(constant.API_ENDPOINT, {
             params: {
                 q: arg,
-                APPID: this.state.apiKey
+                APPID: this.props.apiKey
             }
         }).then(res => {
-            this.setState({
-                // response: res.data.list,
-                // requestCity: res.data.city.name
-            });
             //dispatchでアクションを割り当てる。
             this.props.dispatch(returnWeatherAction(res.data.list, res.data.city.name));
-
             console.log(this.props);
 
         }).catch(function(error){
@@ -40,9 +30,7 @@ class Form extends React.Component {
     }
 
     handleInput(event){
-        this.setState({
-            requestCity: event.target.value,
-        });
+        this.props.dispatch(returnWeatherAction(this.props.response, event.target.value))
     }
 
     componentDidMount(){
@@ -53,11 +41,11 @@ class Form extends React.Component {
     render() {
         return (
             <div>
-                <input type='text' value={this.props.requestCity} onChange={this.handleInput}/>
-                <button type='submit' onClick={() => this.handleGetWeather(this.props.requestCity)}>天気get</button>
+                <input type='text' value={this.props.city_name} onChange={this.handleInput}/>
+                <button type='submit' onClick={() => this.handleGetWeather(this.props.city_name)}>天気get</button>
                 {this.props.response.map(res=>(
                     <ul>
-                        <li>{this.props.requestCity}の{res.dt_txt}の天気は{res.weather[0].main}です</li>
+                        <li>{this.props.city_name}の{res.dt_txt}の天気は{res.weather[0].main}です</li>
                     </ul>
                 ))}
             </div>
@@ -65,4 +53,5 @@ class Form extends React.Component {
     }
 }
 
+//コンポーネントをreduxと繋ぐ
 export default connect(state => state)(Form);
