@@ -1,12 +1,13 @@
 import React from 'react';
-import Weather from './Api';
+import Form from './Form';
+
 
 class App extends React.Component {
     render(){
         return(
             <div className='container'>
                 <h1>お天気検索</h1>
-                <Weather/>
+                <Form/>
             </div>
         )
     }
