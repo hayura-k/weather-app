@@ -4,7 +4,6 @@ import constant from './constant';
 import { connect } from 'react-redux';
 import { returnWeatherAction } from './redux/actions';
 
-
 class Form extends React.Component {
     constructor(props){
         super(props);
@@ -20,8 +19,8 @@ class Form extends React.Component {
                 APPID: this.props.apiKey
             }
         }).then(res => {
-            //dispatchでアクションを割り当てる。
-            this.props.dispatch(returnWeatherAction(res.data.list, res.data.city.name));
+            //アクション生成
+            this.props.returnWeatherAction(res.data.list, res.data.city.name);
             console.log(this.props);
 
         }).catch(function(error){
@@ -30,7 +29,7 @@ class Form extends React.Component {
     }
 
     handleInput(event){
-        this.props.dispatch(returnWeatherAction(this.props.response, event.target.value))
+        this.props.returnWeatherAction(this.props.response, event.target.value);
     }
 
     componentDidMount(){
@@ -53,5 +52,15 @@ class Form extends React.Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return state;
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        returnWeatherAction: (response, city_name)=>dispatch(returnWeatherAction(response, city_name))
+    }
+}
+
 //コンポーネントをreduxと繋ぐ
-export default connect(state => state)(Form);
+export default connect(mapStateToProps, mapDispatchToProps)(Form);
