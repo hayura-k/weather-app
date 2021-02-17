@@ -16,7 +16,6 @@ class Form extends React.Component {
         this.props.weatherFetchRequestAction('東京都');
     }
 
-
     render() {
         return (
             <div>

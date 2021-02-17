@@ -1,4 +1,3 @@
-
 const initialState = {
     weather: {
         response: [],
