@@ -13,6 +13,6 @@ export const handleGetWeather = async(arg)=>{
         console.log(array_res);
         return array_res;
     } catch(error){
-        alert(error);
+        console.log(error);
     }
 }

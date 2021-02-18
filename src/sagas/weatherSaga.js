@@ -10,7 +10,7 @@ function* fetchWeather(action){
         //アクションをdispatchする
         yield put(weatherFetchSuccessAction(response, city_name));
     } catch(error) {
-        alert(error);
+        console.log(error);
     }
 }
 

@@ -32,7 +32,8 @@ class Form extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    return state;
+    //storeから渡す値をフィルタリングする。
+    return {response: state.response, city_name: state.city_name};
 }
 
 const mapDispatchToProps = (dispatch) => {
