@@ -1,9 +1,8 @@
-
 const initialState = {
     weather: {
         response: [],
-        city_name: ''
-    }
-}
+        city_name: '',
+    },
+};
 
 export default initialState;

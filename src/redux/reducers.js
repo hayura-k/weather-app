@@ -1,17 +1,16 @@
-import { RETURN_WEATHER } from './actions';
+import { types } from './actions';
 import initialState from './stores/initialState';
 
-
-export const weatherReducer = (state = initialState.weather, action)=>{
-    switch(action.type){
-        case RETURN_WEATHER:
+export const weatherReducer = (state = initialState.weather, action) => {
+    switch (action.type) {
+        case types.WEATHER_FETCH_SUCCESS:
             return {
                 ...state,
-                ...action.payload
-            }
+                ...action.payload,
+            };
         default:
             return state;
     }
-}
+};
 
 export default weatherReducer;
