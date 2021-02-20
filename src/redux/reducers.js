@@ -12,5 +12,3 @@ export const weatherReducer = (state = initialState.weather, action) => {
             return state;
     }
 };
-
-export default weatherReducer;

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import constant from '../constant';
+import constant from '../components/Constant';
 
 export const handleGetWeather = async (arg) => {
     try {
@@ -10,7 +10,6 @@ export const handleGetWeather = async (arg) => {
             },
         });
         const array_res = [response.data.list, response.data.city.name];
-        console.log(array_res);
         return array_res;
     } catch (error) {
         console.log(error);
