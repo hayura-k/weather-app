@@ -8,7 +8,7 @@ function* fetchWeather(action) {
         //api通信を行う。callの第二引数は、第一引数の関数の引数。
         const [response, city_name] = yield call(
             handleGetWeather,
-            action.payload.input_city
+            (action.payload.input_params.city_name)
         );
         //アクションをdispatchする
         yield put(weatherFetchSuccessAction(response, city_name));

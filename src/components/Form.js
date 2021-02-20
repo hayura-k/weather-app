@@ -1,71 +1,63 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { Field, reduxForm, SubmissionError} from 'redux-form';
+import { status_code } from '../apis/weatherApi';
 import {
-    weatherFetchSuccessAction,
     weatherFetchRequestAction,
 } from '../redux/actions';
 
+
 class Form extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleInput = this.handleInput.bind(this);
+
+    renderError = ({error, touched}) => {
+        if(error && touched){
+            return(
+                <p className='alert alert-danger mt-1'>{error}</p>
+            )
+        }
     }
 
-    handleInput(event) {
-        this.props.weatherFetchSuccessAction(
-            this.props.response,
-            event.target.value
-        );
+    renderInput = ({input ,placeholder, meta}) => {
+        return(
+            <React.Fragment>
+                {/* ...inputでname属性を受け取る */}
+                <input {...input} placeholder={placeholder} className='form-control'/>
+                {this.renderError(meta)}
+            </React.Fragment>
+        )
     }
 
-    componentDidMount() {
-        this.props.weatherFetchRequestAction('東京都');
+    submit = (value, dispatch) => {
+        dispatch(weatherFetchRequestAction(value));
+        if(status_code === 404){
+            console.log(status_code)
+            //api通信失敗時の処理
+            throw new SubmissionError({city_name: 'この都市の天気は分かりません'})
+        }
     }
 
-    render() {
+    render(){
+        const { handleSubmit } = this.props;
+
         return (
-            <div>
-                <input
-                    type="text"
-                    value={this.props.city_name}
-                    onChange={this.handleInput}
-                />
-                <button
-                    type="submit"
-                    onClick={() =>
-                        this.props.weatherFetchRequestAction(
-                            this.props.city_name
-                        )
-                    }
-                >
-                    天気get
-                </button>
-                {this.props.response.map((res) => (
-                    <ul>
-                        <li>
-                            {this.props.city_name}の{res.dt_txt}の天気は
-                            {res.weather[0].main}です
-                        </li>
-                    </ul>
-                ))}
-            </div>
-        );
+            <form onSubmit={handleSubmit(this.submit)}>
+                <div className='form-row'>
+                    <div className='col-11'>
+                        <Field name='city_name' component={this.renderInput} type='text' placeholder='好きな都市を入力してください'/>
+                    </div>
+                    <div className='col-1'>
+                        <button type='submit' className='btn btn-primary'>検索</button>
+                    </div>
+
+
+
+                </div>
+            </form>
+        )
     }
 }
 
-const mapStateToProps = (state) => {
-    //storeから渡す値をフィルタリングする。
-    return { response: state.response, city_name: state.city_name };
-};
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        weatherFetchSuccessAction: (response, city_name) =>
-            dispatch(weatherFetchSuccessAction(response, city_name)),
-        weatherFetchRequestAction: (input_city) =>
-            dispatch(weatherFetchRequestAction(input_city)),
-    };
-};
-
-//コンポーネントをreduxと繋ぐ
-export default connect(mapStateToProps, mapDispatchToProps)(Form);
+export default reduxForm({
+    form: 'reduxForm',
+    initialValues: { city_name: '東京都'}
+})(Form);

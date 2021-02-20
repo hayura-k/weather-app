@@ -1,5 +1,7 @@
 import axios from 'axios';
-import constant from '../constant';
+import constant from '../components/Constant';
+
+export let status_code;
 
 export const handleGetWeather = async (arg) => {
     try {
@@ -10,9 +12,12 @@ export const handleGetWeather = async (arg) => {
             },
         });
         const array_res = [response.data.list, response.data.city.name];
-        console.log(array_res);
+        status_code = 'right';
+        console.log(status_code)
         return array_res;
     } catch (error) {
-        console.log(error);
+        const {status} = error.response
+        status_code = status
+        console.log(status_code)
     }
 };
