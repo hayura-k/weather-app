@@ -1,12 +1,12 @@
 import React from 'react';
-import Form from './Form';
+import WeatherList from './WeatherList';
 
 class App extends React.Component {
     render() {
         return (
             <div className="container">
-                <h1>お天気検索</h1>
-                <Form />
+                <h1 className="text-center">お天気検索</h1>
+                <WeatherList />
             </div>
         );
     }
