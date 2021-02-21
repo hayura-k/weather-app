@@ -12,12 +12,11 @@ export const handleGetWeather = async (arg) => {
             },
         });
         const array_res = [response.data.list, response.data.city.name];
-        status_code = 'right';
-        console.log(status_code)
+        status_code = response.status;
+        console.log(status_code);
         return array_res;
     } catch (error) {
-        const {status} = error.response
-        status_code = status
-        console.log(status_code)
+        status_code = error.response.status;
+        console.log(status_code);
     }
 };

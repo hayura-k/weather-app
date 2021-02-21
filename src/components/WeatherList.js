@@ -14,7 +14,7 @@ class WeatherList extends React.Component {
     render() {
         return (
             <div>
-                <Form/>
+                <Form />
                 <div>
                     {this.props.response.map((res) => (
                         <ul>
@@ -32,14 +32,18 @@ class WeatherList extends React.Component {
 
 const mapStateToProps = (state) => {
     //storeから渡す値をフィルタリングする。
-    return { response: state.weather.response, city_name: state.weather.city_name };
+    return {
+        response: state.weather.response,
+        city_name: state.weather.city_name,
+    };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         weatherFetchRequestAction: (input_city) =>
             dispatch(weatherFetchRequestAction(input_city)),
-        weatherDefaultAction: (input_city) => dispatch(weatherDefaultAction(input_city))
+        weatherDefaultAction: (input_city) =>
+            dispatch(weatherDefaultAction(input_city)),
     };
 };
 
