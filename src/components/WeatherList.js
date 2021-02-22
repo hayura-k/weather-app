@@ -11,10 +11,20 @@ class WeatherList extends React.Component {
         this.props.weatherDefaultAction('東京都');
     }
 
+
     render() {
+        const haveError = this.props.error_message;
+        let error_message;
+        if(haveError){
+            error_message = <p className='alert alert-danger mt-2'>{this.props.error_message}</p>
+        } else {
+            error_message = ''
+        }
+
         return (
             <div>
                 <Form />
+                {error_message}
                 <div>
                     {this.props.response.map((res) => (
                         <ul>
@@ -32,9 +42,11 @@ class WeatherList extends React.Component {
 
 const mapStateToProps = (state) => {
     //storeから渡す値をフィルタリングする。
+    console.log(state);
     return {
         response: state.weather.response,
         city_name: state.weather.city_name,
+        error_message: state.weather.error
     };
 };
 

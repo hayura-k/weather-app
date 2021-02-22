@@ -8,6 +8,11 @@ export const weatherReducer = (state = initialState.weather, action) => {
                 ...state,
                 ...action.payload,
             };
+        case types.ERROR_RESPONSE:
+            return {
+                ...state,
+                ...action.payload
+            };
         default:
             return state;
     }

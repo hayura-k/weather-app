@@ -1,6 +1,6 @@
 import { put, call, takeEvery } from 'redux-saga/effects';
 import { handleGetWeather } from '../apis/weatherApi';
-import { weatherFetchSuccessAction } from '../redux/actions';
+import { weatherFetchSuccessAction, errorResponseAction } from '../redux/actions';
 
 //この中でapi通信をする。引数のactionにはviewからdispatchで送ったアクションを指す。
 function* fetchWeather(action) {
@@ -14,6 +14,7 @@ function* fetchWeather(action) {
         yield put(weatherFetchSuccessAction(response, city_name));
     } catch (error) {
         console.log(error);
+        yield put(errorResponseAction(error));
     }
 }
 

@@ -1,6 +1,5 @@
 import React from 'react';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
-import { status_code } from '../apis/weatherApi';
+import { Field, reduxForm } from 'redux-form';
 import { weatherFetchRequestAction } from '../redux/actions';
 
 class Form extends React.Component {
@@ -27,16 +26,6 @@ class Form extends React.Component {
     submit = (value, dispatch) => {
         //非同期だから、api通信の部分をバックグラウンドにして次の処理に行く
         dispatch(weatherFetchRequestAction(value));
-        console.log(status_code);
-        this.asyncValidate();
-    };
-
-    asyncValidate = () => {
-        if (status_code === 404) {
-            throw new SubmissionError({
-                city_name: 'この都市の天気はわかりません。',
-            });
-        }
     };
 
     render() {
@@ -64,8 +53,17 @@ class Form extends React.Component {
     }
 }
 
+//フロント側での入力バリデーション
+const validate = value => {
+    const errors = {};
+    if(!value.city_name){
+        errors.city_name = '都市を入力してにゃん！'
+    }
+    return errors;
+}
+
 export default reduxForm({
     form: 'reduxForm',
     initialValues: { city_name: '東京都' },
-    asyncBlurFields: ['city_name'],
+    validate
 })(Form);
