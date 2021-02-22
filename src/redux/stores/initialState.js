@@ -2,7 +2,7 @@ const initialState = {
     weather: {
         response: [],
         city_name: '',
-        error: null
+        error: null,
     },
 };
 

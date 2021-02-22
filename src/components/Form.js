@@ -1,8 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { weatherFetchRequestAction } from '../redux/actions';
+import {
+    weatherFetchRequestAction,
+    weatherDefaultAction,
+    weatherFetchSuccessAction,
+} from '../redux/actions';
 
 class Form extends React.Component {
+    componentDidMount() {
+        this.props.weatherDefaultAction(this.props.default_city);
+    }
+
     renderError = ({ error, touched }) => {
         if (error && touched) {
             return <p className="alert alert-danger mt-1">{error}</p>;
@@ -17,22 +26,25 @@ class Form extends React.Component {
                     {...input}
                     placeholder={placeholder}
                     className="form-control"
+                    value={this.props.city_name}
                 />
                 {this.renderError(meta)}
             </div>
         );
     };
 
-    submit = (value, dispatch) => {
-        //非同期だから、api通信の部分をバックグラウンドにして次の処理に行く
-        dispatch(weatherFetchRequestAction(value));
+    handleInput = (e) => {
+        this.props.weatherFetchSuccessAction(
+            this.props.response,
+            e.target.value
+        );
     };
 
     render() {
         const { handleSubmit } = this.props;
 
         return (
-            <form onSubmit={handleSubmit(this.submit)}>
+            <form onSubmit={handleSubmit}>
                 <div className="form-row">
                     <div className="col-11">
                         <Field
@@ -40,6 +52,8 @@ class Form extends React.Component {
                             component={this.renderInput}
                             type="text"
                             placeholder="好きな都市を入力してください"
+                            onChange={this.handleInput}
+                            value={this.props.city_name}
                         />
                     </div>
                     <div className="col-1">
@@ -53,17 +67,37 @@ class Form extends React.Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    //storeから渡す値をフィルタリングする。
+    return {
+        response: state.weather.response,
+        city_name: state.weather.city_name,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        weatherFetchRequestAction: (input_city) =>
+            dispatch(weatherFetchRequestAction(input_city)),
+        weatherDefaultAction: (input_city) =>
+            dispatch(weatherDefaultAction(input_city)),
+        weatherFetchSuccessAction: (response, city_name) =>
+            dispatch(weatherFetchSuccessAction(response, city_name)),
+    };
+};
+
 //フロント側での入力バリデーション
-const validate = value => {
+const validate = (value) => {
     const errors = {};
-    if(!value.city_name){
-        errors.city_name = '都市を入力してにゃん！'
+    if (!value.city_name) {
+        errors.city_name = '空欄ですにゃん！';
     }
     return errors;
-}
+};
 
-export default reduxForm({
+Form = reduxForm({
     form: 'reduxForm',
-    initialValues: { city_name: '東京都' },
-    validate
+    validate,
 })(Form);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form);
