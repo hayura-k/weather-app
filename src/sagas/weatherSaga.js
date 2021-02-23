@@ -15,7 +15,7 @@ function* fetchWeather(action) {
         yield put(weatherFetchSuccessAction(response, city_name));
     } catch (error) {
         console.log(error);
-        yield put(stopSubmit('reduxForm',{city_name: 'この都市は検索'}))
+        yield put(stopSubmit('reduxForm',{city_name: 'この都市は検索出来ませんよ！'}))
 
     }
 }
