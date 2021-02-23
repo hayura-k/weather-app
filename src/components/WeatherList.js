@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { SubmissionError } from 'redux-form';
 import { weatherFetchRequestAction } from '../redux/actions';
 import Form from './Form';
 
@@ -7,6 +8,7 @@ class WeatherList extends React.Component {
     submit = (value, dispatch) => {
         //非同期だから、api通信の部分をバックグラウンドにして次の処理に行く
         dispatch(weatherFetchRequestAction(value));
+        throw new SubmissionError({city_name:'この都市は検索出来ませんよ！'})
     };
 
     render() {

@@ -17,7 +17,8 @@ function* fetchWeather(action) {
         yield put(weatherFetchSuccessAction(response, city_name));
     } catch (error) {
         console.log(error);
-        yield put(errorResponseAction(error));
+        // yield put(errorResponseAction(error));
+
     }
 }
 
