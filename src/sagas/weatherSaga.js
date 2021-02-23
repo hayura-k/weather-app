@@ -1,3 +1,4 @@
+import {stopSubmit} from 'redux-form'
 import { put, call, takeEvery } from 'redux-saga/effects';
 import { handleGetWeather } from '../apis/weatherApi';
 import {
@@ -17,7 +18,7 @@ function* fetchWeather(action) {
         yield put(weatherFetchSuccessAction(response, city_name));
     } catch (error) {
         console.log(error);
-        // yield put(errorResponseAction(error));
+        yield put(stopSubmit('reduxForm',{city_name: 'この都市は検索'}))
 
     }
 }
